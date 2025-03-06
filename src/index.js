@@ -12,6 +12,7 @@ import usuariosRouter from "./routes/usuarios.routes.js";
 import sedesRouter from "./routes/sedes.routes.js";
 import vehciulosRouter from "./routes/vehiculos.routes.js";
 import sendEmailRouter from "./routes/sendEmail.routes.js";
+import pagosRouter from "./routes/pagos.routes.js";
 
 dotenv.config();
 
@@ -23,7 +24,6 @@ app.use(cors({ origin: "*" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-
 app.use("/condcutor", conductorRouter);
 app.use("/envios", enviosRouter);
 app.use("/paquetes", paquetesRouter);
@@ -31,6 +31,7 @@ app.use("/usuario", usuariosRouter);
 app.use("/sedes", sedesRouter);
 app.use("/vehiculos", vehciulosRouter);
 app.use("/senEmail", sendEmailRouter);
+app.use("/pagos", pagosRouter);
 
 app.listen(app.get("Port"), () => {
   console.log("Escuchando por el puerto", app.get("Port"));

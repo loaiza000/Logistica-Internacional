@@ -25,7 +25,6 @@ const envioSchema = new Shcema(
       enum:["Documentos", "Paquetes", "Delicado"],
       default:"Paquetes"
     },
-    // ** NUEVOOOOOOOOOOOOOOOOOOOO
     tipoEnvio: {
       type: String,
       enum: ["Nacional", "Internacional"],
