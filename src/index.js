@@ -13,6 +13,7 @@ import sedesRouter from "./routes/sedes.routes.js";
 import vehciulosRouter from "./routes/vehiculos.routes.js";
 import sendEmailRouter from "./routes/sendEmail.routes.js";
 import pagosRouter from "./routes/pagos.routes.js";
+import inventarioRouter from "./routes/inventarios.routes.js";
 
 dotenv.config();
 
@@ -32,6 +33,7 @@ app.use("/sedes", sedesRouter);
 app.use("/vehiculos", vehciulosRouter);
 app.use("/senEmail", sendEmailRouter);
 app.use("/pagos", pagosRouter);
+app.use("/inventarios", inventarioRouter);
 
 app.listen(app.get("Port"), () => {
   console.log("Escuchando por el puerto", app.get("Port"));
