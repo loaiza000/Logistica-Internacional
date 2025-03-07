@@ -1,38 +1,76 @@
 import { Router } from "express";
 import pagosController from "../controllers/pagos.controller.js";
+import { authClient } from "../middleware/auth.js";
+import { ValidRoles } from "../constants/valid.roles.js";
 
 const pagosRouter = Router();
 
-// Obtener todos los pagos
-pagosRouter.get("/", pagosController.getAllPagos);
+pagosRouter.post(
+  "/",
+  authClient([ValidRoles.ADMINISTRADOR]),
+  pagosController.postPatgo
+);
+pagosRouter.put(
+  "/:id",
+  authClient([ValidRoles.ADMINISTRADOR]),
+  pagosController.updatePago
+);
+pagosRouter.delete(
+  "/:id",
+  authClient([ValidRoles.ADMINISTRADOR]),
+  pagosController.deletePago
+);
 
-// Obtener pago por ID
-pagosRouter.get("/:id", pagosController.getPagosById);
-
-// Crear nuevo pago
-pagosRouter.post("/", pagosController.postPatgo);
-
-// Actualizar pago
-pagosRouter.put("/:id", pagosController.updatePago);
-
-// Eliminar pago (desactivado, no eliminado)
-pagosRouter.delete("/:id", pagosController.deletePago);
-
-// Obtener pagos por estado
-pagosRouter.get("/estado/cancelado", pagosController.getPagosCancelado);
-pagosRouter.get("/estado/pagado", pagosController.getPagosPagado);
-pagosRouter.get("/estado/pendiente", pagosController.getPagosPendiente);
-
-// Obtener pagos por método de pago
-pagosRouter.get("/metodo/paypal", pagosController.getPagosByPaypal);
-pagosRouter.get("/metodo/tarjeta", pagosController.getPagosByTarjeta);
-pagosRouter.get("/metodo/efectivo", pagosController.getPagosByEfectivo);
+pagosRouter.get(
+  "/",
+  authClient([ValidRoles.ADMINISTRADOR, ValidRoles.OPERADOR]),
+  pagosController.getAllPagos
+);
+pagosRouter.get(
+  "/:id",
+  authClient([ValidRoles.ADMINISTRADOR, ValidRoles.OPERADOR]),
+  pagosController.getPagosById
+);
+pagosRouter.get(
+  "/estado/cancelado",
+  authClient([ValidRoles.ADMINISTRADOR, ValidRoles.OPERADOR]),
+  pagosController.getPagosCancelado
+);
+pagosRouter.get(
+  "/estado/pagado",
+  authClient([ValidRoles.ADMINISTRADOR, ValidRoles.OPERADOR]),
+  pagosController.getPagosPagado
+);
+pagosRouter.get(
+  "/estado/pendiente",
+  authClient([ValidRoles.ADMINISTRADOR, ValidRoles.OPERADOR]),
+  pagosController.getPagosPendiente
+);
+pagosRouter.get(
+  "/metodo/paypal",
+  authClient([ValidRoles.ADMINISTRADOR, ValidRoles.OPERADOR]),
+  pagosController.getPagosByPaypal
+);
+pagosRouter.get(
+  "/metodo/tarjeta",
+  authClient([ValidRoles.ADMINISTRADOR, ValidRoles.OPERADOR]),
+  pagosController.getPagosByTarjeta
+);
+pagosRouter.get(
+  "/metodo/efectivo",
+  authClient([ValidRoles.ADMINISTRADOR, ValidRoles.OPERADOR]),
+  pagosController.getPagosByEfectivo
+);
 pagosRouter.get(
   "/metodo/transferencia",
+  authClient([ValidRoles.ADMINISTRADOR, ValidRoles.OPERADOR]),
   pagosController.getPagosByTransferencia
 );
 
-// Pagos por usuario
-pagosRouter.get("/pagosUsuario", pagosController.pagosByUser)
+pagosRouter.get(
+  "/pagosUsuario",
+  authClient([ValidRoles.ADMINISTRADOR, ValidRoles.OPERADOR]),
+  pagosController.pagosByUser
+);
 
 export default pagosRouter;

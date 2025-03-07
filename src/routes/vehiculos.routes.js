@@ -1,38 +1,80 @@
 import { Router } from "express";
 import vehiculoController from "../controllers/vehiculo.controller.js";
+import { authClient } from "../middleware/auth.js";
+import { ValidRoles } from "../constants/valid.roles.js";
 
-const vehciulosRouter = Router();
+const vehiculosRouter = Router();
 
-vehciulosRouter.get("/", vehiculoController.getAllVehiculos);
-vehciulosRouter.get("/:id", vehiculoController.getVehiuloById);
-vehciulosRouter.post("/", vehiculoController.postVehiuclo);
-vehciulosRouter.put("/:id", vehiculoController.updateVehiuclo);
-vehciulosRouter.delete("/:id", vehiculoController.deleteVehiculo);
+vehiculosRouter.post(
+  "/",
+  authClient([ValidRoles.ADMINISTRADOR]),
+  vehiculoController.postVehiuclo
+);
+vehiculosRouter.put(
+  "/:id",
+  authClient([ValidRoles.ADMINISTRADOR]),
+  vehiculoController.updateVehiuclo
+);
+vehiculosRouter.delete(
+  "/:id",
+  authClient([ValidRoles.ADMINISTRADOR]),
+  vehiculoController.deleteVehiculo
+);
 
-// Rutas adicionales
-vehciulosRouter.get("/estado/activos", vehiculoController.getVehiculosActivos);
-vehciulosRouter.get(
+vehiculosRouter.get(
+  "/",
+  authClient([ValidRoles.ADMINISTRADOR, ValidRoles.OPERADOR]),
+  vehiculoController.getAllVehiculos
+);
+vehiculosRouter.get(
+  "/:id",
+  authClient([ValidRoles.ADMINISTRADOR, ValidRoles.OPERADOR]),
+  vehiculoController.getVehiuloById
+);
+vehiculosRouter.get(
+  "/estado/activos",
+  authClient([ValidRoles.ADMINISTRADOR, ValidRoles.OPERADOR]),
+  vehiculoController.getVehiculosActivos
+);
+vehiculosRouter.get(
   "/estado/inactivos",
+  authClient([ValidRoles.ADMINISTRADOR, ValidRoles.OPERADOR]),
   vehiculoController.getVehiculosInactivos
 );
-vehciulosRouter.get(
+vehiculosRouter.get(
   "/estado/disponibles",
+  authClient([ValidRoles.ADMINISTRADOR, ValidRoles.OPERADOR]),
   vehiculoController.getVehiculosDisponibles
 );
-vehciulosRouter.get(
+vehiculosRouter.get(
   "/estado/mantenimiento",
+  authClient([ValidRoles.ADMINISTRADOR, ValidRoles.OPERADOR]),
   vehiculoController.getVehiculosMantenimiento
 );
-vehciulosRouter.get(
+vehiculosRouter.get(
   "/estado/en-transito",
+  authClient([ValidRoles.ADMINISTRADOR, ValidRoles.OPERADOR]),
   vehiculoController.getVehiculosEnTransito
 );
-vehciulosRouter.get("/tipo/camion", vehiculoController.getVehiculosCamiones);
-vehciulosRouter.get(
+vehiculosRouter.get(
+  "/tipo/camion",
+  authClient([ValidRoles.ADMINISTRADOR, ValidRoles.OPERADOR]),
+  vehiculoController.getVehiculosCamiones
+);
+vehiculosRouter.get(
   "/tipo/automovil",
+  authClient([ValidRoles.ADMINISTRADOR, ValidRoles.OPERADOR]),
   vehiculoController.getVehiculosAutomovil
 );
-vehciulosRouter.get("/placa/:placa", vehiculoController.getVehiculosByPlaca);
-vehciulosRouter.get("/sede/:idSede", vehiculoController.getVehiculoBySede);
+vehiculosRouter.get(
+  "/placa/:placa",
+  authClient([ValidRoles.ADMINISTRADOR, ValidRoles.OPERADOR]),
+  vehiculoController.getVehiculosByPlaca
+);
+vehiculosRouter.get(
+  "/sede/:idSede",
+  authClient([ValidRoles.ADMINISTRADOR, ValidRoles.OPERADOR]),
+  vehiculoController.getVehiculoBySede
+);
 
-export default router;
+export default vehiculosRouter;
