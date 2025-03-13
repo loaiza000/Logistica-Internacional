@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 
-const { model, Shcema } = mongoose;
+const { model, Schema } = mongoose;
 
-const envioSchema = new Shcema(
+const envioSchema = new Schema(
   {
     origen: { type: String, required: [true, "El campo origen es requerido"] },
     destino: {

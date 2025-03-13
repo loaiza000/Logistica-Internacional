@@ -4,7 +4,7 @@ const { model, Schema } = mongoose;
 
 const conductorShcema = new Schema(
   {
-    nombre: { Type: String, required: [true, "El campo nombre es requerido"] },
+    nombre: { type: String, required: [true, "El campo nombre es requerido"] },
     apellido: {
       type: String,
       required: [true, "El campo apellido es requerido"],

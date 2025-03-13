@@ -1,5 +1,5 @@
 import { Router } from "express";
-import usaurioController from "../controllers/usuario.controller.js";
+import usaurioController from "../controllers/usuarios.controller.js";
 import { authClient } from "../middleware/auth.js";
 import { ValidRoles } from "../constants/valid.roles.js";
 

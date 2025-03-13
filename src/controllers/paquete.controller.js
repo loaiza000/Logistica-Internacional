@@ -434,28 +434,16 @@ paqueteController.paquetesPendientes = async (req, res) => {
 
 // ** GET PAQUETES ENTREGADOS
 
-paqueteController.paquetesPendientes = async (req, res) => {
+paqueteController.paquetesEntregados = async (req, res) => {
   try {
-    const paquetesEntregados = await paqueteModel.find({
-      estado: "entregado".toLowerCase(),
-    });
-    if (paquetesEntregados.lenght === 0) {
-      return response(
-        res,
-        404,
-        false,
-        "",
-        "Paquetes no encontradas con el estado entregados"
-      );
+    const paquetes = await paqueteModel
+      .find({ estado: "entregado" })
+      .populate("sede", "nombreSede ubiacion");
+    if (paquetes.length === 0) {
+      return response(res, 404, false, "", "No hay paquetes entregados");
     }
 
-    return response(
-      res,
-      200,
-      true,
-      paquetesEntregados,
-      "Lista de paqeuetes con el estado en entregados"
-    );
+    return response(res, 200, true, paquetes, "Lista de paquetes entregados");
   } catch (error) {
     return handleError(res, error);
   }

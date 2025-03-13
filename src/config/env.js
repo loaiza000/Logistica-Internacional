@@ -10,4 +10,5 @@ export const config = {
 
   db: process.env.DB_URI,
   port: process.env.PORT,
+  apikey: process.env.OPENWEATHER_API_KEY,
 };

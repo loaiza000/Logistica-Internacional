@@ -1,5 +1,5 @@
 import jsonwebtoken from "jsonwebtoken";
-import { response } from "../helpers/response/js";
+import { response } from "../helpers/response.js";
 import { usuarioModel } from "../models/usuario.model.js";
 
 const messageNoAuth = (res) => {

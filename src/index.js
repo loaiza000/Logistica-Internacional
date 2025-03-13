@@ -14,27 +14,29 @@ import vehciulosRouter from "./routes/vehiculos.routes.js";
 import sendEmailRouter from "./routes/sendEmail.routes.js";
 import pagosRouter from "./routes/pagos.routes.js";
 import inventarioRouter from "./routes/inventarios.routes.js";
+import weatherRouter from "./routes/weather.routes.js";
 
 dotenv.config();
 
 const app = express();
 
-app.use("Port", process.env.PORT);
+app.set("port", process.env.PORT);
 app.use(morgan("dev"));
 app.use(cors({ origin: "*" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.use("/condcutor", conductorRouter);
+app.use("/conductor", conductorRouter);
 app.use("/envios", enviosRouter);
 app.use("/paquetes", paquetesRouter);
 app.use("/usuario", usuariosRouter);
 app.use("/sedes", sedesRouter);
 app.use("/vehiculos", vehciulosRouter);
-app.use("/senEmail", sendEmailRouter);
+app.use("/sendEmail", sendEmailRouter);
 app.use("/pagos", pagosRouter);
 app.use("/inventarios", inventarioRouter);
+app.use("/weather", weatherRouter);
 
-app.listen(app.get("Port"), () => {
-  console.log("Escuchando por el puerto", app.get("Port"));
+app.listen(app.get("port"), () => {
+  console.log("Escuchando por el puerto", app.get("port"));
 });

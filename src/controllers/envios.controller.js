@@ -699,7 +699,7 @@ enviosController.getEnviosByVehiculos = async (req, res) => {
 
 // ** SIMULATE COSTO
 
-enviosController.simulateCosto = async (res, res) => {
+enviosController.simulateCosto = async (req, res) => {
   try {
     const { peso, volumen, tipoMercancia } = req.body;
 
