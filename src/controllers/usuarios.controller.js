@@ -5,6 +5,7 @@ import { encryptPassword } from "../helpers/password.encrypt.js";
 import { generateToken } from "../helpers/generate.token.js";
 import { response } from "../helpers/response.js";
 import { sedeModel } from "../models/sede.model.js";
+import bcrypt from "bcrypt"
 
 const usaurioController = {};
 
@@ -568,14 +569,14 @@ usaurioController.looginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const usuario = await usuarioModel.findOne({ email });
+    const usuario = await usuarioModel.findOne({ email: email });
     if (!usuario) {
-      return res.status(404).json({ mensaje: "Usuario no encontrado" });
+      return response(res, 404, false, "", "Email no registrado o encontrado");
     }
 
     const validPassword = await bcrypt.compare(password, usuario.password);
     if (!validPassword) {
-      return res.status(401).json({ mensaje: "Contraseña incorrecta" });
+      return response(res, 400, false, "", "Password incorrecto");
     }
 
     const token = generateToken({
@@ -584,7 +585,7 @@ usaurioController.looginUser = async (req, res) => {
       rol: usuario.rol,
     });
 
-    res.json({
+    return response({
       mensaje: "Login exitoso",
       token,
       usuario: {

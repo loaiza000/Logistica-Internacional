@@ -12,7 +12,7 @@ export const authClient = (roles) => {
 
     if (
       req.headers.authorization &&
-      req.headers.authorization.startsWithj("Bearer")
+      req.headers.authorization.startsWith("Bearer")
     ) {
       token = req.headers.authorization.split(" "[1]);
       jsonwebtoken.verify(token, process.env.SECRET, async (error, payload) => {
