@@ -2,40 +2,40 @@ import jsonwebtoken from "jsonwebtoken";
 import { response } from "../helpers/response.js";
 import { usuarioModel } from "../models/usuario.model.js";
 
-const messageNoAuth = (res) => {
-  return response(res, 401, false, "No esta autorizado");
-};
+const messageNoAuth = (res) => response(res, 401, false, "No está autorizado");
 
-export const authClient = (roles) => {
-  return (req, res, next) => {
-    let token = null;
+export const authClient = (roles = []) => {
+  return async (req, res, next) => {
+    try {
+      let token = req.headers.authorization;
 
-    if (
-      req.headers.authorization &&
-      req.headers.authorization.startsWith("Bearer")
-    ) {
-      token = req.headers.authorization.split(" "[1]);
-      jsonwebtoken.verify(token, process.env.SECRET, async (error, payload) => {
-        if (error) {
-          return messageNoAuth(res);
-        }
+      if (!token || !token.startsWith("Bearer ")) {
+        return messageNoAuth(res);
+      }
 
-        const user = await usuarioModel.findById({ _id: payload.user });
-        if (!user) {
-          return messageNoAuth(res);
-        }
+      token = token.split(" ")[1];
+      const payload = jsonwebtoken.verify(token, process.env.SECRET);
 
-        // ** verificar roles
-        if (roles.includes(user.rol)) {
-          req.userId = payload.user;
-          next();
-        }else{
-          return response(res,400,false,`Necesitas un rol valido [${roles}]`)
-        }
-      });
-    }
+      const user = await usuarioModel.findById(payload.user);
 
-    if (!token) {
+      if (!user) {
+        return messageNoAuth(res);
+      }
+
+      if (!user.rol || !roles.includes(user.rol)) {
+        return response(
+          res,
+          403,
+          false,
+          `Acceso denegado. Se requiere uno de los siguientes roles: [${roles.join(
+            ", "
+          )}]`
+        );
+      }
+
+      req.userId = payload.user;
+      next();
+    } catch (error) {
       return messageNoAuth(res);
     }
   };
